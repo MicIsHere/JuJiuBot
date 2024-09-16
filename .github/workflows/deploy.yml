@@ -1,4 +1,4 @@
-name: Deploy JuJiuBot
+name: Deploy Python Server
 
 on:
   push:
@@ -19,17 +19,17 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}  # 服务器的域名，不带端口号
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_HOST: "home.mic.run"
+          REMOTE_USER: "mic"
           TARGET: '/home/jujiubot'
-          ARGS: "-avzr --delete" 
+          ARGS: "-avzr --delete"
           SOURCE: "./"
-          EXCLUDE: "/.idea/"
-          SSH_OPTIONS: "-p 44444"  # 指定自定义端口号
+          EXCLUDE: "/venv/"
+          SSH_OPTIONS: "-p 44444"  # 指定端口号
 
       # 3. 重启远程服务器上的守护进程
       - name: Restart the service
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 44444 mic@home.mic.run << 'EOF'
-          sudo systemctl restart jujiubot
+          sudo systemctl restart your_service_name
           EOF
