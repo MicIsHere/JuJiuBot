@@ -31,5 +31,5 @@ jobs:
       - name: Restart the service
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 44444 mic@home.mic.run << 'EOF'
-          sudo systemctl restart your_service_name
+          sudo systemctl restart Bot
           EOF
