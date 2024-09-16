@@ -20,18 +20,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: use Node.js
-        # 使用action库  actions/setup-node安装node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-      # 安装依赖
-      - name: npm install
-        run: npm install
-      # 打包
-      - name: npm build
-        run: npm run build
       # 部署到服务器
       - name: deploy
         uses: easingthemes/ssh-deploy@v2.1.1
@@ -45,8 +33,8 @@ jobs:
           # 服务器域名/IP
           REMOTE_HOST: ${{ secrets.HOST }}
           # 服务器默认用户名为root
-          REMOTE_USER: "mic"
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
           # 目标目录
           TARGET: '/home/jujiubot'
           # 排除目录
-          EXCLUDE: "/node_modules/"
+          EXCLUDE: "/.idea/"
