@@ -41,6 +41,10 @@ message: List[dict] = [
 		"expr": "jrrp >= 90",
 		"end": "！好评如潮！"
 	},
+    {
+        "expr": "jrrp >= 80",
+        "end": "！不错啦不错啦！"
+    },
 	{
 		"expr": "jrrp >= 60",
 		"end": "！是不错的一天呢！"
