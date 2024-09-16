@@ -19,9 +19,9 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          REMOTE_HOST: "home.mic.run"
-          REMOTE_USER: "mic"
-          REMOTE_PORT: "44444"  # 指定自定义SSH端口
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}    # 将主机信息放入 GitHub Secrets
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}    # 将用户信息放入 GitHub Secrets
+          REMOTE_PORT: ${{ secrets.REMOTE_PORT }}    # 将端口信息放入 GitHub Secrets
           TARGET: '/home/jujiubot'
           ARGS: "-avzr --delete"
           SOURCE: "./"
@@ -30,8 +30,6 @@ jobs:
       # 3. 重启远程服务器上的守护进程
       - name: Restart the service
         run: |
-          ssh -o StrictHostKeyChecking=no -i /home/runner/.ssh/id_rsa -p 44444 mic@home.mic.run << 'EOF'
+          echo "${{ secrets.PRIVATE_KEY }}" | ssh -o StrictHostKeyChecking=no -i /dev/stdin -p ${{ secrets.REMOTE_PORT }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
           sudo systemctl restart Bot
           EOF
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
