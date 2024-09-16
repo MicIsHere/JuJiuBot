@@ -30,6 +30,8 @@ jobs:
       # 3. 重启远程服务器上的守护进程
       - name: Restart the service
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 44444 mic@home.mic.run << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /home/runner/.ssh/id_rsa -p 44444 mic@home.mic.run << 'EOF'
           sudo systemctl restart Bot
           EOF
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
