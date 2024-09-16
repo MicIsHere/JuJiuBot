@@ -29,7 +29,7 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
           TARGET: '/home/jujiubot'
-          ARGS: "-avzP --delete"
+          ARGS: "-avzP --delete --exclude-from=.rsync-exclude"
           SOURCE: "./"
           EXCLUDE: "/venv/"
 
