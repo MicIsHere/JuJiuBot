@@ -36,4 +36,4 @@ jobs:
       # 4. 重启远程服务器上的守护进程
       - name: Restart the service
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.REMOTE_PORT }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S systemctl restart Bot"
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.REMOTE_PORT }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "echo '${{ secrets.SUDO_PASSWORD }}' | sudo -S supervisorctl restart Bot:Bot_00"
