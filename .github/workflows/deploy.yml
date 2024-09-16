@@ -28,6 +28,7 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
           ARGS: "-avzP --delete --exclude-from=.rsync-exclude"
           SOURCE: "./"
+          EXCLUDE: "**/__pycache__"
 
       - name: Restart the service
         run: |
