@@ -21,14 +21,11 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           REMOTE_HOST: "home.mic.run"
           REMOTE_USER: "mic"
+          REMOTE_PORT: "44444"  # 指定自定义SSH端口
           TARGET: '/home/jujiubot'
           ARGS: "-avzr --delete"
           SOURCE: "./"
           EXCLUDE: "/venv/"
-          SSH_OPTIONS: "-o StrictHostKeyChecking=no -p 44444"  # 指定自定义端口和其他 SSH 选项
-        with:
-          # 强制 Rsync 使用指定的端口
-          rsh: "ssh -i /home/runner/.ssh/deploy_key -o StrictHostKeyChecking=no -p 44444"
 
       # 3. 重启远程服务器上的守护进程
       - name: Restart the service
