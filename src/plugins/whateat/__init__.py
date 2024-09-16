@@ -53,8 +53,6 @@ __plugin_meta__ = PluginMetadata(
         添加饮料 饮料名\n
         删除菜单 菜名\n
         删除饮料 饮料名""",
-        "author": "divandia <106718176+Cvandia@users.noreply.github.com>",
-        "version": "1.1.5",
     },
 )
 
