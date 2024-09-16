@@ -1,0 +1,65 @@
+{
+    "version": 0.1,
+    "loras": {
+        "bocchiEdStyleLora_bocchiEdStyle": {
+            "name": "孤独摇滚ed画风",
+            "replace": true,
+            "replace_prompts": ""
+        },
+        "mochaSky": {
+            "name": "美丽的天空",
+            "replace": true,
+            "replace_prompts": "beautiful_detailed_sky"
+        },
+        "light20and20shadow": {
+            "name": "光与暗",
+            "replace": true,
+            "replace_prompts": ""
+        },
+        "conceptHolographic_holographicClothing": {
+            "name": "镭射材质服装",
+            "replace": true,
+            "replace_prompts": ""
+        },
+        "moxin": {
+            "name": "画风模型-moxin",
+            "replace": true,
+            "replace_prompts": ""
+        },
+        "fufu_0G0v": {
+            "name": "概念-fufu",
+            "replace": true,
+            "replace_prompts": "amigurumi (medium), green_theme"
+        },
+        "elegantHanfuRuqun_v10": {
+            "name": "汉服模型",
+            "replace": false,
+            "replace_prompts": "hanfu"
+        },
+        "animeScreencapStyle_v230epochs": {
+            "name": "动漫画风模型",
+            "replace": true,
+            "replace_prompts": ""
+        },
+        "hoshinoAi02_cuSY": {
+            "name": "星野爱",
+            "replace": true,
+            "replace_prompts": "1gril"
+        },
+        "arimaKanaOshiNoKo_kanaDiffusionMixV3": {
+            "name": "有马加奈",
+            "replace": true,
+            "replace_prompts": "1gril"
+        },
+        "n0ppp52dc3lk_heita": {
+            "name": "黑塔",
+            "replace": true,
+            "replace_prompts": "1gril"
+        },
+        "MikaMisono_v08Beta": {
+            "name": "碧蓝档案-圣园未花",
+            "replace": true,
+            "replace_prompts": "1gril"
+        },
+    }
+}

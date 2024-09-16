@@ -1,0 +1,10 @@
+account:
+  uin: 机器人QQ号
+  password: "机器人密码"
+
+message:
+  post-format: array
+
+servers:
+  - ws-forward:
+      universal: ws://0.0.0.0:5000/onebot/v11/ws
