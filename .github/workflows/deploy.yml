@@ -24,6 +24,7 @@ jobs:
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
