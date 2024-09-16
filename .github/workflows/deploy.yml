@@ -1,4 +1,4 @@
-name: Deploy Python Server
+name: Deploy JuJiuBot
 
 on:
   push:
