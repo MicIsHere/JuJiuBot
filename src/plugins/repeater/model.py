@@ -35,7 +35,7 @@ except Exception as error:
 mongo_client = MongoClient(
     plugin_config.mongo_host, plugin_config.mongo_port, unicode_decode_error_handler='ignore')
 
-mongo_db = mongo_client['PallasBot']
+mongo_db = mongo_client['JuJiuBot']
 
 message_mongo = mongo_db['message']
 message_mongo.create_index(name='time_index',
@@ -139,8 +139,8 @@ class Chat:
     ANSWER_THRESHOLD_CHOICE_LIST = list(
         range(ANSWER_THRESHOLD - len(ANSWER_THRESHOLD_WEIGHTS) + 1, ANSWER_THRESHOLD + 1))
     BLACKLIST_FLAG = 114514
-    SPEAK_FLAG = '[PallasBot: Speak]'
-    REPLY_FLAG = '[PallasBot: Reply]'
+    SPEAK_FLAG = '[JuJiuBot: Speak]'
+    REPLY_FLAG = '[JuJiuBot: Reply]'
 
     # 运行期变量
 

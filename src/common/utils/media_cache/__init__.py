@@ -12,7 +12,7 @@ else:
     from pymongo import MongoClient
 
 mongo_client = MongoClient(plugin_config.mongo_host, plugin_config.mongo_port)
-mongo_db = mongo_client['PallasBot']
+mongo_db = mongo_client['JuJiuBot']
 
 image_cache = mongo_db['image_cache']
 image_cache.create_index(name='cq_code_index',

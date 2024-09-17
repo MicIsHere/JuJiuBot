@@ -29,12 +29,12 @@ backup_full_mongodb() {
 }
 
 backup_important_data_in_mongodb() {
-    mongodump -d PallasBot -c blacklist -o $output/mongodb
-    mongodump -d PallasBot -c config -o $output/mongodb
-    mongodump -d PallasBot -c group_config -o $output/mongodb
-    mongodump -d PallasBot -c user_config -o $output/mongodb
-    mongodump -d PallasBot -c context -o $output/mongodb
-    # mongodump -d PallasBot -c image_cache -o $output/mongodb
+    mongodump -d JuJiuBot -c blacklist -o $output/mongodb
+    mongodump -d JuJiuBot -c config -o $output/mongodb
+    mongodump -d JuJiuBot -c group_config -o $output/mongodb
+    mongodump -d JuJiuBot -c user_config -o $output/mongodb
+    mongodump -d JuJiuBot -c context -o $output/mongodb
+    # mongodump -d JuJiuBot -c image_cache -o $output/mongodb
 
     rm $output_latest/important_data_in_mongodb
     ln -s $output/mongodb $output_latest/important_data_in_mongodb
