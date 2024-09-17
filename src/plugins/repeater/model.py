@@ -236,7 +236,7 @@ class Chat:
         if self.chat_data.is_plain_text and len(self.chat_data.plain_text) < 2:
             return None
 
-        # 防止发送无效信息
+        # 防止回复无效信息
         if self.chat_data.is_plain_text and self.chat_data.plain_text == "[CQ:image,file=https://multime]":
             return None
 

@@ -1,24 +1,19 @@
-// 可以使用 vscode 的 MongoDB 插件直接执行该脚本（需要先连接数据库）
-// 如果你有多个牛牛账号，可以修改 account 执行多次
-
-const database = 'JuJIuBot';
+const database = 'JuJiuBot';
 const collection = 'config';
 
 use(database);
 
-db.getCollection(collection)
+db.getCollection(config)
     .updateOne(
         {
-            "account": 2415838976          // 牛牛的账号
+            "account": 2415838976
         }, 
         {
             "$set": {
-                "security": true      // 牛牛账号是否安全
-                                        // 若是，会认为所有发不出去了的消息都是过时了或者违规了，自动全删掉
-                                        // 如果账号被封禁或风控，请勿开启，不然一通乱删（
-                "auto_accept": true,    // 是否自动同意加群
+                "security": true,
+                "auto_accept": true,
                 "admins": [
-                    3098880154              // 管理员账号，数组，可以设置多个
+                    3098880154
                 ]
             }
         }, 
