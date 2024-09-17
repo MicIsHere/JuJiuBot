@@ -28,7 +28,7 @@ class MongoDBService(pymongo_rpc_pb2_grpc.MongoDBServiceServicer):
 
     def __init__(self):
         self.client = pymongo.MongoClient("mongodb://localhost:27017/")
-        self.db = self.client["PallasBot"]
+        self.db = self.client["JuJiuBot"]
 
     def __del__(self):
         self.client.close()

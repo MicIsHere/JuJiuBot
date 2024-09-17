@@ -98,7 +98,7 @@ class MongoClient:
 
 if __name__ == '__main__':
     mongo_client = MongoClient('localhost', 50051)
-    mongo_db = mongo_client['PallasBot']
+    mongo_db = mongo_client['JuJiuBot']
     context_mongo = mongo_db['context']
     find_key = {"keywords": "牛牛 唱歌"}
     result = context_mongo.find_one(find_key)

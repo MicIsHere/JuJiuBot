@@ -7,7 +7,7 @@ from src.common.utils.rpc import MongoClient, CollectionProxy
 client = MongoClient('localhost:50051')
 
 # 选择数据库
-db = client['PallasBot']
+db = client['JuJiuBot']
 
 # 选择集合
 collection = db['config']

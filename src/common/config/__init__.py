@@ -102,7 +102,7 @@ class Config(ABC):
         if cls._config_mongo is None:
             mongo_client = MongoClient(
                 plugin_config.mongo_host, plugin_config.mongo_port)
-            mongo_db = mongo_client['PallasBot']
+            mongo_db = mongo_client['JuJiuBot']
             cls._config_mongo = mongo_db[cls._table]
         return cls._config_mongo
 

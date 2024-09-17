@@ -1,7 +1,7 @@
 // 可以使用 vscode 的 MongoDB 插件直接执行该脚本（需要先连接数据库）
 // 如果你有多个牛牛账号，可以修改 account 执行多次
 
-const database = 'PallasBot';
+const database = 'JuJIuBot';
 const collection = 'config';
 
 use(database);
