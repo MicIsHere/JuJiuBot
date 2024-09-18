@@ -4,6 +4,8 @@ from pydantic import BaseModel, Extra
 class Config(BaseModel, extra=Extra.ignore):
     """Plugin Config Here"""
 
+    overbracket_enable: bool = False
+
     overbracket_base_chance: float = 0.02
     """收到任意消息时发送括号的概率"""
 
