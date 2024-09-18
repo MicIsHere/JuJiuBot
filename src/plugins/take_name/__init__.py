@@ -16,6 +16,7 @@ from src.common.utils import is_bot_admin
 change_name_sched = require('nonebot_plugin_apscheduler').scheduler
 
 blocklist_group = [787467591]
+disable_can_block: bool = False
 
 mongo_client = MongoClient(
     plugin_config.mongo_host, plugin_config.mongo_port, unicode_decode_error_handler='ignore')
@@ -107,6 +108,8 @@ block_take_name = on_message(
 
 @block_take_name.handle()
 async def _(bot: Bot, event: GroupMessageEvent, state: T_State):
+    if not disable_can_block:
+        return
     take_name_blocklist_mongo.update_one(
         {'group_id': event.group_id},
         {'$set': {'qq_id': event.user_id}},
