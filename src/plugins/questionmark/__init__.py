@@ -19,6 +19,8 @@ question = on_regex(r"^([?？¿!！¡\s]+)$", priority=6, block=False)
 
 @question.handle()
 async def _(rgx: tuple = RegexGroup()):
+    if not cfg.qm_enable:
+        return
     if not rgx:
         raise IgnoredException
     mark = rgx[0] \

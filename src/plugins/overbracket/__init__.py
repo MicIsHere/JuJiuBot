@@ -11,6 +11,8 @@ obr = on_message(priority=25, block=False)
 
 @obr.handle()
 async def make_lbracket(event: Event):
+    if not parsed_config.overbracket_enable:
+        return
     msg = event.get_message().extract_plain_text()
     if len(msg) == 0:
         return
