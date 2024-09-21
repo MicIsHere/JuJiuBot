@@ -28,15 +28,14 @@ class AccountManager:
         with self.refresh_lock:
             self.refresh_time = time.time()
             if os.path.exists(self.accounts_dir):
-                go_cqhttp_plugin_accounts: list[int] = [
+                [
                     int(d) for d in os.listdir(self.accounts_dir) if d.isnumeric()
                 ]
             else:
-                go_cqhttp_plugin_accounts = []
-            onebot_accounts: list[int] = [
+                onebot_accounts: list[int] = [
                 int(self_id) for self_id, bot in get_bots().items() if self_id.isnumeric() and bot.type == 'OneBot V11'
             ]
-            self.accounts = list(set(go_cqhttp_plugin_accounts + onebot_accounts))
+            self.accounts = list(set(onebot_accounts))
 
     async def is_other_bot(self, bot: Bot, event: GroupMessageEvent, state: T_State) -> bool:
         self.refresh_accounts()

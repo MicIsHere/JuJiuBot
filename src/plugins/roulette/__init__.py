@@ -164,7 +164,7 @@ async def shot(self_id: int, user_id: int, group_id: int) -> Optional[Awaitable[
             if self_role == 'owner':  # 牛牛是群主不能退群，不然群就解散了
                 return None
 
-            async def group_leave():
+            async def group_leave() -> None:
                 await get_bot(str(self_id)).call_api('set_group_leave', **{
                     'group_id': group_id
                 })

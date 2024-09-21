@@ -1,15 +1,9 @@
 import httpx
-from nonebot import logger, on_message, on_regex
-from nonebot.rule import fullmatch
+from nonebot import logger
 from nonebot import on_message
-from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot, MessageSegment
-from httpx import AsyncClient
 from nonebot import on_startswith
-from nonebot import on_command
-from nonebot.adapters import Message
-from nonebot.params import CommandArg
-from nonebot.plugin import PluginMetadata
-from nonebot.typing import T_State
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot
+from nonebot.rule import fullmatch
 
 matcher = on_startswith("牛牛对联 ", ignorecase=False)
 notfindarg = on_message(fullmatch(("牛牛对联"), ignorecase=False), priority=7)
