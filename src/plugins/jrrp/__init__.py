@@ -69,24 +69,26 @@ mongo_client = MongoClient(
     plugin_config.mongo_host, plugin_config.mongo_port, unicode_decode_error_handler='ignore')
 mongo_db = mongo_client['JuJiuBot']
 jrrp_mongo = mongo_db['jrrp']
-    
+
 #新增数据
-# 新增数据：使用嵌套结构插入或更新记录
 def insert_tb(qqid, value, date):
-    # 更新该用户的日期记录，如果该日期的记录已经存在则更新，否则追加
-    jrrp_mongo.update_one(
-        {"qid": qqid, "records.time": date},
-        {"$set": {"records.$.value": value}},  # 更新该日期的记录
-        upsert=False
-    )
+    # 将 value 转换为整数并插入到 MongoDB
+    value = int(value)
+    qqid = int(qqid),
+    user_record = jrrp_mongo.find_one({"qid": str(qqid)})
 
-    # 如果没有该日期的记录，则追加新日期记录
-    jrrp_mongo.update_one(
-        {"qid": qqid, "records.time": {"$ne": date}},  # 如果记录中没有该日期
-        {"$push": {"records": {"time": date, "value": value}}},  # 追加新的日期记录
-        upsert=True  # 如果没有该用户则插入新文档
-    )
-
+    if user_record:
+        # 如果已有该 QQID 的记录，更新 jrrp_records 列表
+        jrrp_mongo.update_one(
+            {"qid": str(qqid)},
+            {"$push": {"records": {"date": date, "value": value}}}
+        )
+    else:
+        # 如果没有该 QQID 记录，插入新的文档
+        jrrp_mongo.insert_one({
+            "qid": str(qqid),
+            "records": [{"date": date, "value": value}]
+        })
 # 查询历史数据
 def select_tb_all(qqid):
     result = jrrp_mongo.find_one({"qid": qqid}, {"_id": 0, "records": 1})
