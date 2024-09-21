@@ -56,7 +56,7 @@ for row in rows:
         continue
 
     # 插入到 MongoDB
-    insert_tb(qqid, value, date)
+    insert_tb(str(qqid), value, date)
 
 # 完成后关闭 SQLite 数据库连接
 sqlite_db.close()
