@@ -87,10 +87,9 @@ def insert_tb(qqid, value, date):
         upsert=True  # 如果没有该用户则插入新文档
     )
 
-
 # 查询历史数据
 def select_tb_all(qqid):
-    result = jrrp_mongo.find_one({"qid": qqid}, {"_id": 0, "records": 1})  # 只返回 jrrp_records 字段
+    result = jrrp_mongo.find_one({"qid": qqid}, {"_id": 0, "records": 1})
     if result:
         return result.get("records", [])
     return []
