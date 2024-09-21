@@ -170,41 +170,95 @@ async def jrrp_handle(bot: Bot, event: Event):
 alljrrp = on_message(fullmatch("牛牛历史人品", ignorecase=False), priority=7)
 @alljrrp.handle()
 async def alljrrp_handle(bot: Bot, event: Event):
-    alldata = select_tb_all(event.get_user_id())
-    if alldata == None:
-        await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您还没有过历史人品记录！'))
-    times = len(alldata)
+    # 查询用户 qid 对应的 MongoDB 数据
+    qqid = event.get_user_id()
+    alldata = jrrp_mongo.find_one({"qid": str(qqid)})
+
+    # 如果没有找到对应数据
+    if alldata is None:
+        await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您还没有过历史人品记录！'))
+
+    # 获取用户的所有 records
+    jrrp_records = alldata.get("records", [])
+    times = len(jrrp_records)
+
+    # 如果用户没有任何记录
+    if times == 0:
+        await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您还没有过历史人品记录！'))
+
     allnum = 0
-    for i in alldata:
-        allnum = allnum + int(i[1])
-    await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您一共使用了{times}天牛牛人品，您历史平均的人品指数是{round(allnum / times,1)}'))
+
+    # 累加所有记录的 Value
+    for record in jrrp_records:
+        allnum += int(record["value"])
+
+    # 计算历史平均值
+    average = round(allnum / times, 1)
+
+    # 输出历史人品结果
+    await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您一共使用了{times}天牛牛人品，您历史平均的人品指数是{average}'))
 
 monthjrrp = on_message(fullmatch("牛牛本月人品", ignorecase=False), priority=7)
 @monthjrrp.handle()
 async def monthjrrp_handle(bot: Bot, event: Event):
-    alldata = select_tb_all(event.get_user_id())
+    # 查询用户 qid 对应的 MongoDB 数据
+    qqid = event.get_user_id()
+    alldata = jrrp_mongo.find_one({"qid": str(qqid)})
+
+    # 如果没有找到对应数据
+    if alldata is None:
+        await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您还没有过历史人品记录！'))
+
+    # 获取用户的所有 records
+    jrrp_records = alldata.get("records", [])
+
     times = 0
     allnum = 0
-    for i in alldata:
-        if same_month(i[2]):
-            times = times + 1
-            allnum = allnum + int(i[1])
+    # 累加本月所有记录的 Value
+    for record in jrrp_records:
+        if same_month(record["time"]):  # 只计算本月的数据
+            times += 1
+            allnum += int(record["value"])
+
+    # 如果本月没有任何记录
     if times == 0:
-        await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您本月还没有过人品记录！'))
-    await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您本月共使用了{times}天牛牛人品，平均的人品指数是{round(allnum / times,1)}'))
+        await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您本月还没有过人品记录！'))
+
+    # 计算本月的平均值
+    average = round(allnum / times, 1)
+
+    # 输出本月人品结果
+    await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您本月共使用了{times}天牛牛人品，平均的人品指数是{average}'))
 
 weekjrrp = on_message(fullmatch("牛牛本周人品", ignorecase=False), priority=7)
 @weekjrrp.handle()
 async def weekjrrp_handle(bot: Bot, event: Event):
-    alldata = select_tb_all(event.get_user_id())
-    if alldata == None:
-        await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您还没有过历史人品记录！'))
+    # 查询用户 QQID 对应的 MongoDB 数据
+    qqid = event.get_user_id()
+    alldata = jrrp_mongo.find_one({"qid": str(qqid)})
+
+    # 如果没有找到对应数据
+    if alldata is None:
+        await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您还没有过历史人品记录！'))
+
+    # 获取用户的所有 records
+    jrrp_records = alldata.get("records", [])
+
     times = 0
     allnum = 0
-    for i in alldata:
-        if same_week(i[2]):
-            times = times + 1
-            allnum = allnum + int(i[1])
+
+    # 累加本周所有记录的 Value
+    for record in jrrp_records:
+        if same_week(record["time"]):  # 只计算本周的数据
+            times += 1
+            allnum += int(record["value"])
+
+    # 如果本周没有任何记录
     if times == 0:
-        await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您本周还没有过人品记录！'))
-    await jrrp.finish(Message(f'[CQ:at,qq={event.get_user_id()}]您本周共使用了{times}次牛牛人品，平均的人品指数是{round(allnum / times,1)}'))
+        await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您本周还没有过人品记录！'))
+
+    # 计算本周的平均值
+    average = round(allnum / times, 1)
+
+    # 输出本周人品结果
+    await jrrp.finish(Message(f'[CQ:at,qq={qqid}]您本周共使用了{times}次牛牛人品，平均的人品指数是{average}'))
