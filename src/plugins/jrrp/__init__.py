@@ -8,9 +8,9 @@ from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.adapters.onebot.v11.bot import Bot, Event
 from nonebot.adapters.onebot.v11.message import Message
 from nonebot.rule import fullmatch
+from pymongo import MongoClient
 
 from src.common.config import plugin_config
-from src.common.utils.rpc import MongoClient
 
 message: List[dict] = [
 	{
