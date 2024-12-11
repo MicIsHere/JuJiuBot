@@ -1,24 +1,22 @@
-import random
 import asyncio
+import random
 import re
-import time
 import threading
+import time
 
-from nonebot import on_message, on_notice, require, get_bot, logger, get_driver
-from nonebot.exception import ActionFailed
-from nonebot.typing import T_State
-from nonebot.rule import keyword, to_me, Rule
-from nonebot.adapters import Bot, Event
-from nonebot.adapters.onebot.v11 import GroupMessageEvent, PrivateMessageEvent, GroupRecallNoticeEvent
+from nonebot import on_message, on_notice, require, get_bot, logger
+from nonebot.adapters import Bot
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, GroupRecallNoticeEvent
 from nonebot.adapters.onebot.v11 import permission, Message, MessageSegment
+from nonebot.exception import ActionFailed
 from nonebot.permission import Permission
 from nonebot.permission import SUPERUSER
+from nonebot.rule import keyword, to_me, Rule
+from nonebot.typing import T_State
+
 from src.common.config import BotConfig
-from src.common.utils.media_cache import insert_image, get_image
 from src.common.utils.array2cqcode import try_convert_to_cqcode
-
-from discord_webhook import DiscordWebhook, DiscordEmbed
-
+from src.common.utils.media_cache import insert_image, get_image
 from .model import Chat
 
 any_msg = on_message(
@@ -28,8 +26,6 @@ any_msg = on_message(
 )
 
 SORRY_WORDS = ['菊酒牛牛知道错了...达咩!', '菊酒牛牛不会再这么说了...', '果面呐噻,菊酒牛牛说错话了...', '菊酒牛牛不该这么说...']
-
-webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1236863853837553695/DqHt84ydV1bx_leb5j7WtTf-Yzm-5MDfsB3D5ERZa5f3HCV6Emzu4SEPchbwSIeLkB69", username="JuJiuBot")
 
 async def is_shutup(self_id: int, group_id: int) -> bool:
     info = await get_bot(str(self_id)).call_api('get_group_member_info', **{

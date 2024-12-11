@@ -11,7 +11,8 @@ from src.common.config import BotConfig, GroupConfig, UserConfig
 from src.common.utils import is_bot_admin
 
 from .wiki import WikiVoice
-from discord_webhook import DiscordWebhook, DiscordEmbed
+
+from ...common.utils.manager_message import alert_call
 
 wiki = WikiVoice()
 operator = 'Pallas'
@@ -43,7 +44,6 @@ greeting_voices = [
 # wiki.download_voices(operator, 'char_485_pallas')
 
 target_msgs = ['牛牛', '帕拉斯']
-webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1236863853837553695/DqHt84ydV1bx_leb5j7WtTf-Yzm-5MDfsB3D5ERZa5f3HCV6Emzu4SEPchbwSIeLkB69", username="JuJiuBot")
 
 
 async def message_equal(bot: "Bot", event: "Event", state: T_State) -> bool:
@@ -107,12 +107,10 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
         # 赋值在之后的版本中会变为None
         try:
             active_notice_id = event.group_id
-
             # 加个判定解决
-            if (active_notice_id) == None:
+            if active_notice_id is None:
                 is_group_notice = False
-
-        except AttributeError as e:
+        except AttributeError:
             active_notice_id = event.target_id
             # 设置是否为群通知
             is_group_notice = False
@@ -126,30 +124,24 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
         await asyncio.sleep(delay)
         config.refresh_cooldown('poke')
 
-        #判断不是群通知
+        # 判断不是群通知
         if not is_group_notice:
             logger.info("ready to send friend_poke for user {}".format(event.user_id))
-            await bot.call_api('friend_poke', **{
+            await get_bot(str(event.self_id)).call_api('friend_poke', **{
                 'user_id': event.user_id
             })
             return
 
         logger.info("ready to send group_poke for user {} in group {}".format(event.user_id, event.group_id))
-        await bot.call_api('group_poke', **{
-            'group_id': event.group_id,
-            'user_id': event.user_id
+        await get_bot(str(event.self_id)).call_api('group_poke', **{
+            "group_id": event.group_id,
+            "user_id": event.user_id
         })
-        return
 
     elif event.notice_type == 'group_increase':
         if event.user_id == event.self_id:
             msg = '我是来自菊酒屋的菊酒牛牛，会在这里休息一段时间......虽然这么说，我渴望以美酒和戏剧被招待，更渴望走向战场。'
-            embed = DiscordEmbed(title="入群提示", description="已加入群聊 {}".format(event.group_id), color="03b2f8")
-            embed.set_footer(text="Powered by 菊酒牛牛")
-            embed.set_timestamp()
-
-            webhook.add_embed(embed)
-            webhook.execute()
+            alert_call("入群提示", "已加入群聊".format(event.group_id))
         elif await is_bot_admin(event.self_id, event.group_id):
             msg: Message = MessageSegment.at(event.user_id) + MessageSegment.text(
                 '波奇酱，欢迎加入这盛大的庆典！我是来自菊酒屋的菊酒牛牛......要来一杯美酒么？')
@@ -169,25 +161,14 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
 
     # 被禁言自动退群
     elif event.notice_type == 'group_ban' and event.sub_type == 'ban' and event.user_id == event.self_id:
-        embed = DiscordEmbed(title="禁言提示", description="已退出群聊 {}".format(event.group_id), color="03b2f8")
-        embed.set_footer(text="Powered by 菊酒牛牛")
-        embed.set_timestamp()
-        embed.add_embed_field(name="是否全局封禁", value="False")
-
-        webhook.add_embed(embed)
-        webhook.execute()
+        alert_call("被禁言提示", "已退出群聊 {}".format(event.group_id))
         await get_bot(str(event.self_id)).call_api('set_group_leave', **{
             'group_id': event.group_id,
         })
 
     # 被踢了拉黑该群（所以拉黑了又能做什么呢）
     elif event.notice_type == 'group_decrease' and event.sub_type == 'kick_me':
-        embed = DiscordEmbed(title="踢出群聊提示", description="已被群聊 {} 踢出".format(event.group_id), color="03b2f8")
-        embed.set_footer(text="Powered by 菊酒牛牛")
-        embed.set_timestamp()
-        embed.add_embed_field(name="是否全局封禁", value="True")
-        webhook.add_embed(embed)
-        webhook.execute()
+        alert_call("被踢群提示", "已被群聊 {} 踢出".format(event.group_id))
         
         GroupConfig(event.group_id).ban()
         UserConfig(event.operator_id).ban()

@@ -1,31 +1,29 @@
 import random
-from nonebot import on_message, get_driver
+from nonebot import on_message
 from nonebot.adapters import Event
-from .config import Config
 
-global_config = get_driver().config
-parsed_config = Config.parse_obj(global_config)
+from src.common.config import plugin_config
 
 obr = on_message(priority=25, block=False)
 
 
 @obr.handle()
 async def make_lbracket(event: Event):
-    if not parsed_config.overbracket_enable:
+    if not plugin_config.overbracket_enable:
         return
     msg = event.get_message().extract_plain_text()
     if len(msg) == 0:
         return
     last = msg[-1]
-    if parsed_config.overbracket_nohalfsize and last in "([{":
+    if plugin_config.overbracket_nohalfsize and last in "([{":
         text = "半角异端！"
-        chance = parsed_config.overbracket_purpose_chance
-    elif last in parsed_config.overbracket_brackets:
+        chance = plugin_config.overbracket_purpose_chance
+    elif last in plugin_config.overbracket_brackets:
         text = last
-        chance = parsed_config.overbracket_purpose_chance
+        chance = plugin_config.overbracket_purpose_chance
     else:
-        text = random.choice(parsed_config.overbracket_brackets)
-        chance = parsed_config.overbracket_base_chance
+        text = random.choice(plugin_config.overbracket_brackets)
+        chance = plugin_config.overbracket_base_chance
 
     assert 0 <= chance <= 1, "存在错误的概率数值，正确范围为 0~1 之间（包含两端）"
 

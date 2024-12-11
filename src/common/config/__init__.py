@@ -29,15 +29,15 @@ class PluginConfig(BaseModel, extra=Extra.ignore):
     # mongodb port
     mongo_port: int = 27017
     # answer 相关阈值，值越大，牛牛废话越少；越小，牛牛废话越多
-    answer_threshold: int = 3
+    answer_threshold: int = 4
     # answer 阈值权重
     answer_threshold_weights: List[int] = [7, 23, 70]
     # 上下文联想，记录多少个关键词（每个群）
-    topics_size: int = 16
+    topics_size: int = 14
     # 上下文命中后，额外的权重系数
     topics_importance: int = 10000
     # N 个群有相同的回复，就跨群作为全局回复
-    cross_group_threshold: int = 2
+    cross_group_threshold: int = 3
     # 复读的阈值，群里连续多少次有相同的发言，就复读
     repeat_threshold: int = 3
     # 主动发言的阈值，越小废话越多
@@ -49,7 +49,7 @@ class PluginConfig(BaseModel, extra=Extra.ignore):
     # 喝醉之后，超过多长的文本全部转换成语音发送
     drunk_tts_threshold: int = 6
     # 连续主动说话的概率
-    speak_continuously_probability: float = 0.5
+    speak_continuously_probability: float = 0.4
     # 主动说话加上随机戳一戳群友的概率
     speak_poke_probability: float = 0.6
     # 连续主动说话最多几句话
@@ -77,6 +77,21 @@ class PluginConfig(BaseModel, extra=Extra.ignore):
     tts_vocoder: str = 'pwgan_aishell3'
     # chat 模型的strategy
     chat_strategy: str = ''
+    # 收到任意消息时，是否发送括号
+    overbracket_enable: bool = True
+    # 收到任意消息时，发送括号的概率
+    overbracket_base_chance: float = 0.001
+    # 收到末尾带括号消息时，发送括号的概率
+    overbracket_purpose_chance: float = 0.01
+    # 用于检测与发送的括号备选列表
+    overbracket_brackets: str = "（"
+    # 在消息文本末尾为半角括号时，是否以同等概率发送“半角异端！
+    overbracket_nohalfsize: bool = False
+    # 收到问号时，是否发送一个反向的问号
+    questionmark_enable: bool = True
+    # 收到问号时，发送反向问号的概率
+    questionmark_trigger_rate: float = 0.01
+
 
 
 try:

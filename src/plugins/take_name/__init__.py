@@ -15,13 +15,9 @@ from src.common.utils import is_bot_admin
 
 change_name_sched = require('nonebot_plugin_apscheduler').scheduler
 
-blocklist_group = [787467591]
-disable_can_block: bool = False
-
 mongo_client = MongoClient(
     plugin_config.mongo_host, plugin_config.mongo_port, unicode_decode_error_handler='ignore')
 mongo_db = mongo_client['JuJiuBot']
-take_name_blocklist_mongo = mongo_db['take_name_blocklist']
 
 @change_name_sched.scheduled_job('cron', minute='*/1')
 async def change_name():
@@ -86,8 +82,8 @@ async def change_name():
 
             # 戳一戳
             await bot.call_api('group_poke', **{
-                'group_id': group_id,
-                'user_id': target_user_id
+                'user_id': target_user_id,
+                'group_id': group_id
             })
 
             config.update_taken_name(target_user_id)
@@ -96,21 +92,9 @@ async def change_name():
             # 可能牛牛退群了
             continue
 
-async def is_block_take_name(bot: Bot, event: GroupMessageEvent, state: T_State) -> bool:
-    return event.get_plaintext().strip() in ['牛牛别改我名字', '牛牛不要改我名字', '牛牛不要改成我名字', '牛牛别改成我名字']
-
 block_take_name = on_message(
     rule=Rule(is_block_take_name),
     priority=5,
     block=True,
     permission=permission.GROUP
 )
-
-@block_take_name.handle()
-async def _(bot: Bot, event: GroupMessageEvent, state: T_State):
-    if not disable_can_block:
-        return
-    take_name_blocklist_mongo.update_one(
-        {'group_id': event.group_id},
-        {'$set': {'qq_id': event.user_id}},
-        upsert=True)
